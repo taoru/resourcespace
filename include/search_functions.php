@@ -904,7 +904,7 @@ function search_filter($search,$archive,$restypes,$starsearch,$recent_search_day
 			}
 		elseif ($search_all_workflow_states)
 			{hook("search_all_workflow_states_filter");}   
-		elseif ($archive==0 && $pending_review_visible_to_all)
+		elseif ($archive==0 && getval("archive_restrict","")=="" && $pending_review_visible_to_all)
             {
             # If resources pending review are visible to all, when listing only active resources include
             # pending review (-1) resources too.

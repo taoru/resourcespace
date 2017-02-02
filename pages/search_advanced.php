@@ -640,9 +640,10 @@ if($advanced_search_archive_select)
 				if (!checkperm("z" . $additional_archive_state)) { ?><option value="<?php echo $additional_archive_state?>" <?php if ($archive==$additional_archive_state) { ?>selected<?php } ?>><?php echo isset($lang["status" . $additional_archive_state])?$lang["status" . $additional_archive_state]:$additional_archive_state ?></option><?php }
 				}			
 			?>
-
 		</select>
+        <input type="hidden" name="archive_restrict" value="true">
 	</div>
+    
 	<?php
 	}
 else
