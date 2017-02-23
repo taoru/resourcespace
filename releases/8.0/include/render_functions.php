@@ -45,8 +45,9 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
                     {
                     $display_condition_js_prepend=($forsearchbar ? "#simplesearch_".$fields[$cf]["ref"]." " : "");
                     
-                    $scriptconditions[$condref]["field"] = $fields[$cf]["ref"];  # add new jQuery code to check value
-                    $scriptconditions[$condref]['type'] = $fields[$cf]['type'];
+                    $scriptconditions[$condref]["field"]               = $fields[$cf]["ref"];  # add new jQuery code to check value
+                    $scriptconditions[$condref]['type']                = $fields[$cf]['type'];
+                    $scriptconditions[$condref]['display_as_dropdown'] = $fields[$cf]['display_as_dropdown'];
 					$scriptconditionnodes = get_nodes($fields[$cf]['ref'], null, (FIELD_TYPE_CATEGORY_TREE == $fields[$cf]['type'] ? true : false));
                     
                     //$scriptconditions[$condref]['node_options'] = array();
@@ -114,7 +115,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 
                             $checkname = "nodes_searched[{$fields[$cf]['ref']}][]";
                             $jquery_selector = "input[name=\"{$checkname}\"]";
-                            if(FIELD_TYPE_DROP_DOWN_LIST == $fields[$cf]['type'])
+                            if(FIELD_TYPE_DROP_DOWN_LIST == $fields[$cf]['type'] && true == $fields[$cf]['display_as_dropdown'])
                                 {
                                 $checkname       = "nodes_searched[{$fields[$cf]['ref']}]";
                                 $jquery_selector = "select[name=\"{$checkname}\"]";
@@ -187,12 +188,13 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
                     $jquery_condition_selector = "input[name=\"nodes_searched[{$scriptcondition['field']}][]\"]";
                     $js_conditional_statement  = "fieldokvalues{$scriptcondition['field']}.indexOf(element.value) != -1";
 
-                    if(in_array($scriptcondition['type'],array(FIELD_TYPE_CHECK_BOX_LIST,FIELD_TYPE_RADIO_BUTTONS)))
+                    if(in_array($scriptcondition['type'], array(FIELD_TYPE_CHECK_BOX_LIST, FIELD_TYPE_RADIO_BUTTONS))
+                        || (FIELD_TYPE_DROP_DOWN_LIST == $scriptcondition['type'] && false == $scriptcondition['display_as_dropdown']))
                         {
                         $js_conditional_statement = "jQuery(this).prop('checked') && {$js_conditional_statement}";
                         }
 
-                    if(FIELD_TYPE_DROP_DOWN_LIST == $scriptcondition['type'])
+                    if(FIELD_TYPE_DROP_DOWN_LIST == $scriptcondition['type'] && true == $scriptcondition['display_as_dropdown'])
                         {
                         $jquery_condition_selector = "select[name=\"nodes_searched[{$scriptcondition['field']}]\"] option:selected";
                         }
